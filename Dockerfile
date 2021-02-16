@@ -9,9 +9,9 @@ RUN wget -q -O /elasticmq-server.jar https://s3-eu-west-1.amazonaws.com/software
 RUN mkdir -p /config
 COPY conf/elasticmq.conf /config/elasticmq.conf
 COPY conf/queues.conf /config/queues.conf
-#WORKDIR /elasticmq
-#RUN mkdir -p /elasticmq && chown nobody:nobody /elasticmq && chmod 0750 /elasticmq
-#USER nobody
+
+EXPOSE 9324
 
 ENV ELASTICMQ_OPTS="-Dconfig.file=/config/elasticmq.conf"
-CMD exec java ${ELASTICMQ_OPTS} -jar /elasticmq-server.jar
+#CMD exec java ${ELASTICMQ_OPTS} -jar /elasticmq-server.jar
+ENTRYPOINT ["java", "-Dconfig.file=/config/elasticmq.conf", "-Dlogback.configurationFile=/config/logback.xml", "-jar", "/elasticmq-server.jar"]
